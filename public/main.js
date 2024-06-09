@@ -53,10 +53,16 @@ function appendMessage(userId, message, self) {
     li.classList.add("text-right", "flex-row-reverse");
   }
   const displayId = userId.substring(0, 6);
-  li.innerHTML = `<span class="font-medium uppercase py-2 px-2 text-white bg-[#${displayId}]">${displayId}</span><span class="block min-w-[10%] border border-gray-300 rounded text-left p-2 bg-white break-all	shadow">${message.replace(
-    /\n/,
-    "<br/>"
-  )}</span>`;
+  const msgSpan = document.createElement("span");
+  msgSpan.setAttribute(
+    "class",
+    "block min-w-[10%] border border-gray-300 rounded text-left p-2 bg-white break-all	shadow"
+  );
+  msgSpan.innerText = message;
+  li.innerHTML = `
+	<span class="font-medium uppercase py-2 px-2 text-white bg-[#${displayId}] border rounded">${displayId}</span>
+	`;
+  li.appendChild(msgSpan);
   ul.appendChild(li);
   li.scrollIntoView();
 }
