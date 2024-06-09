@@ -36,8 +36,6 @@ ws.addEventListener("message", async (res) => {
   }
 });
 
-document.getElementById("send").addEventListener("click", send);
-
 function send() {
   const newMessage = input.value;
   if (newMessage) {
@@ -88,6 +86,7 @@ function appendMessage(userId, message, self) {
   li.scrollIntoView();
 }
 
+document.getElementById("send").addEventListener("click", send);
 document.getElementById("newMessage").addEventListener("keydown", (e) => {
   if (e.metaKey && e.key === "Enter") {
     console.log(e);

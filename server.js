@@ -46,6 +46,6 @@ wss.on("connection", function connection(ws) {
 });
 
 const port = 3000;
-server.listen(port, "192.168.0.113", () => {
+server.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
 });
