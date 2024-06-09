@@ -1,4 +1,4 @@
-# WebPack Chat Room
+# WebSocket Chat Room
 
 ```
 npm install
