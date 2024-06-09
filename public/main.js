@@ -2,7 +2,7 @@ const input = document.getElementById("newMessage");
 const ul = document.getElementById("messages");
 
 let userId;
-const ws = new WebSocket("ws://localhost:3000");
+const ws = new WebSocket(`ws://${location.host}`);
 ws.addEventListener("open", () => {
   console.log("connected");
 });
@@ -48,19 +48,33 @@ function send() {
 
 function appendMessage(userId, message, self) {
   const li = document.createElement("li");
-  li.setAttribute("class", "flex items-start gap-2");
+  li.setAttribute("class", "flex items-start gap-3");
   if (self) {
     li.classList.add("text-right", "flex-row-reverse");
   }
-  const displayId = userId.substring(0, 6);
+  const name = userId.substring(0, 3);
+  const color = userId.substring(0, 6);
   const msgSpan = document.createElement("span");
   msgSpan.setAttribute(
     "class",
-    "block min-w-[10%] border border-gray-300 rounded text-left p-2 bg-white break-all	shadow"
+    `
+		block min-w-[10%] border border-gray-300 rounded text-left p-2 bg-white text-gray-700 break-all shadow
+		relative before:block before:absolute before:w-3 before:h-3 before:border before:top-3
+		before:left-0 before:translate-x-[-50%] before:border-gray-300 before:rotate-45 before:bg-white
+		before:border-r-transparent before:border-t-transparent
+		`
   );
+  if (self) {
+    msgSpan.classList.remove("before:left-0");
+    msgSpan.classList.add(
+      "before:right-0",
+      "before:translate-x-[50%]",
+      "before:rotate-[225deg]"
+    );
+  }
   msgSpan.innerText = message;
   li.innerHTML = `
-	<span class="font-medium uppercase py-2 px-2 text-white bg-[#${displayId}] border rounded">${displayId}</span>
+	<span class="font-medium uppercase py-2 px-2 text-white bg-[#${color}] border rounded">${name}</span>
 	`;
   li.appendChild(msgSpan);
   ul.appendChild(li);
