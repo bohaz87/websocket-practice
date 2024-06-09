@@ -36,10 +36,13 @@ wss.on("connection", function connection(ws) {
           client.send(megStr);
         }
       });
+    } else if (data.type === "initUser") {
+      if (data.userId) {
+        ws.userId = data.userId;
+      }
+      ws.send(JSON.stringify({ type: "user", id: ws.userId, lastMessages }));
     }
   });
-
-  ws.send(JSON.stringify({ type: "user", id: userId, lastMessages }));
 });
 
 const port = 3000;

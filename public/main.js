@@ -4,8 +4,14 @@ const ul = document.getElementById("messages");
 let userId;
 const ws = new WebSocket(`ws://${location.host}`);
 ws.addEventListener("open", () => {
-  console.log("connected");
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    ws.send(JSON.stringify({ type: "initUser" }));
+  } else {
+    ws.send(JSON.stringify({ type: "initUser", userId }));
+  }
 });
+
 ws.addEventListener("close", () => {
   console.log("closed");
 });
@@ -17,15 +23,16 @@ ws.addEventListener("message", async (res) => {
   const data = JSON.parse(res.data);
   if (data.type === "user") {
     userId = data.id;
+    localStorage.setItem("userId", userId);
     const lastMessages = data.lastMessages;
     for (let i = 0; i < lastMessages.length; i++) {
       const message = lastMessages[i];
       await Promise.resolve().then(() =>
-        appendMessage(message.id, message.message)
+        appendMessage(message.id, message.message, message.id === userId)
       );
     }
   } else if (data.type === "message") {
-    appendMessage(data.id, data.message, false);
+    appendMessage(data.id, data.message, data.id === userId);
   }
 });
 
